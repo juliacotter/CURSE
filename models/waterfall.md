@@ -1,4 +1,4 @@
-# Waterfall Proceess Model
+# Waterfall Process Model
 
 ## Requirements
 The following are the give requirements for users and courses:

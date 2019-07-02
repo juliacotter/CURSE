@@ -19,9 +19,10 @@ class user{
 class student:public user{
   public:
     string major;
+    int graduationYear;
     list <course> regCourses;
 
-    student(string fn, string ln, string em, string mj):firstName(fn), lastName(ln), email(em), major(mj);
+    student(string fn, string ln, string em, string mj, int gy):firstName(fn), lastName(ln), email(em), major(mj), graduationYear(gy) {};
 
   // log in, check schedule, register for classes, log out
     void checkSchedule();
@@ -30,11 +31,11 @@ class student:public user{
 
 class instructor:public user{
   public:
-    string officeLoaction;
+    string title, officeLoaction;
     list <course> offeredCourses;
     list <student> roster;
 
-    instructor(string fn, string ln, string em, string ol):firstName(fn), lastName(ln), email(em), officeLoaction(ol);
+    instructor(string fn, string ln, string em, string t, string ol):firstName(fn), lastName(ln), email(em), title(t), officeLoaction(ol) {};
     // log in, check roster, see their available courses, log out
     void checkRoster();
     void checkCourses();
@@ -42,9 +43,9 @@ class instructor:public user{
 
 class admin:public user{
   public:
-    string officeLoction;
+    string title, officeLoction;
 
-    admin(string fn, string ln, string em, string ol):firstName(fn), lastName(ln), email(em), officeLoaction(ol);
+    admin(string fn, string ln, string em, string t, string ol):firstName(fn), lastName(ln), email(em), title(t), officeLoaction(ol) {};
 
   // Log in, check rosters, add/remove/edit courses, force add/drop on student profiles, log out
     void checkRoster();

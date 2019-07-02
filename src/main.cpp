@@ -7,6 +7,7 @@
 list <student> students;
 list <instructor> instructors;
 list <admin> admins;
+list<course> courses;
 
 int main(){
   int choice = 0;

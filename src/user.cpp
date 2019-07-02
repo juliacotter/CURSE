@@ -35,7 +35,7 @@ void user::logout(string currentUser){
 // Julia
 void student::checkSchedule(){
   for(list<course>::iterator i = this->regCourses.begin(); i != this->regCourses.end(); i++){
-    cout << (i)->courseName << ": " << (i)->time << endl;
+    cout << (i)->title << ": " << (i)->time << endl;
   }
 }
 
@@ -99,7 +99,7 @@ void instructor::checkRoster(){
 // Julia
 void instructor::checkCourses(){
   for(list<course>::iterator i = this->offeredCourses.begin(); i != this->offeredCourses.end(); i++){
-    cout << (i)->courseName << ": " << (i)->time << endl;
+    cout << (i)->title << ": " << (i)->time << endl;
   }
 }
 //Wilson

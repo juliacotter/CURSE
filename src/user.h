@@ -9,10 +9,11 @@ using namespace std;
 
 class user{
   public:
-    string uID, firstName, lastName, email, password, role;
+    int wNumber;
+    string firstName, lastName, email, password, role;
 
-    string login(list <student *> &Students, list <instructor *> &Instructors, list<admin *> &Admins);
-    void logout();
+    string login(list <student> Students, list <instructor> Instructors, list<admin> Admins);
+    void logout(string currentUser);
 };
 
 class student:public user{
@@ -30,11 +31,11 @@ class student:public user{
 class instructor:public user{
   public:
     string officeLoaction;
-    list <course> courses;
+    list <course> offeredCourses;
     list <student> roster;
 
     instructor(string fn, string ln, string em, string ol):firstName(fn), lastName(ln), email(em), officeLoaction(ol);
-  // log in, check roster, see their available courses, log out
+    // log in, check roster, see their available courses, log out
     void checkRoster();
     void checkCourses();
 };
@@ -48,7 +49,7 @@ class admin:public user{
   // Log in, check rosters, add/remove/edit courses, force add/drop on student profiles, log out
     void checkRoster();
     void editCourse();
-    void editStudent();
+    void editStudent(list<student> Students, list<course> Courses);
 };
 
 #endif

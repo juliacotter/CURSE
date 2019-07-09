@@ -39,6 +39,7 @@ void student::checkSchedule(){
   }
 }
 
+// Wilson
 void student::courseRegister(){
     int dropAdd = 0;
     string crnInput;

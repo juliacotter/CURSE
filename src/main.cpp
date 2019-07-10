@@ -11,7 +11,7 @@ int main(){
   int choice = 0;
   string userEmail, userPW;
   string userRole;
-  int quitter
+  int quitter = 0;
   int loggedIn = 0;
   do{
     cout << "-------------LOGIN MENU--------------" << ENDL;
@@ -43,8 +43,8 @@ int main(){
             break;
           case 9:
             currentUser.logout();
-            loggedIn = 0;
             currentUser.userRole = NULL;
+            loggedIn = 0;
             break;
           default:
             cout << "Sorry, that was not one of the choices. Please try again." << endl;
@@ -65,8 +65,8 @@ int main(){
             break;
           case 9:
             currentUser.logout();
-            loggedIn = 0;
             currentUser.userRole = NULL;
+            loggedIn = 0;
             break;
           default:
             cout << "Sorry, that was not one of the choices. Please try again." << endl;
@@ -87,8 +87,8 @@ int main(){
             break;
           case 9:
             currentUser.logout();
-            loggedIn = 0;
             currentUser.userRole = NULL;
+            loggedIn = 0;
             break;
           default:
             cout << "Sorry, that was not one of the choices. Please try again." << endl;

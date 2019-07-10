@@ -7,46 +7,22 @@ using namespace std;
 // class functions
 
 // Julia
-string user::login(list<student> Students, list<instructor> Instructors, list<admin> Admins){
-  string em, pw, currentUser;
-  cout << "Enter email: ";
-  cin.ignore();
-  getline(cin, em);
-  cout << "Eneter password: ";
-  getline(cin, pw);
-  
-  for(list<student>::iterator i = Students.begin(); i != Students.end(); i++){
-    if(em == (i)->email && pw == (i)->password){
-      currentUser = (i)->wNumber;
-      return currentUser, (i)->role;
-    }
-    else{
-      cout << "Invalid email or password.";
-    }
-  }
-}
-
-// Julia
-void user::logout(string currentUser){
-  currentUser = NULL;
-  cout << "Logging out...";
-}
-
-// Julia
 void student::checkSchedule(){
   for(list<course>::iterator i = this->regCourses.begin(); i != this->regCourses.end(); i++){
     cout << (i)->title << ": " << (i)->time << endl;
   }
 }
 
-// Wilson
+//Julia - check available courses
+
+// Julia
 void student::courseRegister(){
     int dropAdd = 0;
     string crnInput;
     cout << "Type 1 to Add and 2 to Drop." << endl;
     cin >> dropAdd;
     if(dropAdd == 1){
-        if(student->regCourses.size() >= 5){
+        if(this->regCourses.size() >= 5){
             cout << "Sorry, you have registered for too many courses." << endl;
             return;            
         }
@@ -78,6 +54,7 @@ void student::courseRegister(){
       cout << "Sorry, that was not one of the options." << endl;
     }
 }
+
 //Wilson
 void instructor::checkRoster(){
   int crnInput;
@@ -103,6 +80,7 @@ void instructor::checkCourses(){
     cout << (i)->title << ": " << (i)->time << endl;
   }
 }
+
 //Wilson
 void admin::checkRoster(){
   int crnInput;
@@ -120,6 +98,7 @@ void admin::checkRoster(){
   }
   cout << "Sorry, no course was found with that CRN." << endl;  
 }
+
 // Wilson
 void admin::editCourse(){
   int adminChoice, crnInput;

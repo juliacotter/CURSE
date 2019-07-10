@@ -7,6 +7,10 @@
 list <user> users;
 list<course> courses;
 
+string login(list<user> user, string em, string pw){
+
+}
+
 int main(){
   int choice = 0;
   string userEmail, userPW;
@@ -19,15 +23,27 @@ int main(){
     cin >> userEmail;
     cout << endl << "Enter password: ";
     cin << userPW;
-    list<user>::iterator i = users.begin();
-    for(i;i!=user.end();i++){
-      (i).login(users);
-    }
+ 
+    for(list<user>::iterator i = user.begin(); i != user.end(); i++){
+      if(userEmail == (i)->email && userPW == (i)->password){
+        if((i)->role == "student"){
+          student currentUser;
+          currentUser = i;
+        }
+        else if((i)->role == "admin"){
+          admin currentUser;
+          currentUser = i;
+        }
+        else if((i)->role == "instructor"){
+          instructor currentUser;
+          currentUser = i;
+        }
+        loggedIn = 1;
+        break;
+      }
+    } cout << "Invalid email or password.";
 
-    currentUser.userRole = user->role;
-    currentUser.userID = user->userID;
-    loggedIn = 1;
-    if(currentUser.userRole == "admin"){
+    if(currentUser->role == "admin"){
       while(loggedIn == 1){  
         cout << endl << "---------------ADMIN MENU----------------" << endl;
         cout << endl << "Type 1 to check a roster, type 2 to edit a course, type 3 to edit a student, or type 9 to Logout." << endl;
@@ -42,8 +58,7 @@ int main(){
             currentUser.editStudent();
             break;
           case 9:
-            currentUser.logout();
-            currentUser.userRole = NULL;
+            delete currentUser;
             loggedIn = 0;
             break;
           default:
@@ -52,7 +67,7 @@ int main(){
         }
       }
     }
-    else if(currentUser.userRole == "student"){
+    else if(currentUser->role == "student"){
       while(loggedIn == 1){
         cout << endl << "---------------STUDENT MENU----------------" << endl;
         cout << endl << "Type 1 to enter course registration, type 2 to check your schedule, or type 9 to Logout." << endl;
@@ -64,8 +79,7 @@ int main(){
             currentUser.checkSchedule();
             break;
           case 9:
-            currentUser.logout();
-            currentUser.userRole = NULL;
+            delete currentUser;
             loggedIn = 0;
             break;
           default:
@@ -74,7 +88,7 @@ int main(){
         }
       }
     }
-    else if(currentUser.userRole == "instructor"){
+    else if(currentUser->role == "instructor"){
       while(loggedIn == 1){
           cout << endl << "---------------INSTRUCTOR MENU----------------" << endl;
         cout << endl << "Type 1 to check a roster, type 2 to check your courses, or type 9 to Logout." << endl;
@@ -86,8 +100,7 @@ int main(){
             currentUser.checkCourses();
             break;
           case 9:
-            currentUser.logout();
-            currentUser.userRole = NULL;
+            delete currentUser;
             loggedIn = 0;
             break;
           default:

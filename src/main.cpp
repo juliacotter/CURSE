@@ -1,64 +1,77 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "user.h"
 #include "course.h"
+#include "user.h"
 
-list <user> users;
-list<course> courses;
+using namespace std;
 
-string login(list<user> user, string em, string pw){
-
-}
+list <student*> students;
+list <instructor*> instructors;
+list<admin*> admins;
+list<course*> courses;
 
 int main(){
   int choice = 0;
   string userEmail, userPW;
   string userRole;
+  student *currentUser_s;
+  instructor *currentUser_i;
+  admin *currentUser_a;
   int quitter = 0;
   int loggedIn = 0;
+
+  student *exampleStudent = new student("Julia", "Cotter", "cotterj@wit.edu", "abc123","CE", 2020);
+  students.push_back(exampleStudent);
+
   do{
-    cout << "-------------LOGIN MENU--------------" << ENDL;
+    cout << "-------------LOGIN MENU--------------" << endl;
     cout << "Enter email: ";
     cin >> userEmail;
     cout << endl << "Enter password: ";
-    cin << userPW;
- 
-    for(list<user>::iterator i = user.begin(); i != user.end(); i++){
-      if(userEmail == (i)->email && userPW == (i)->password){
-        if((i)->role == "student"){
-          student currentUser;
-          currentUser = i;
-        }
-        else if((i)->role == "admin"){
-          admin currentUser;
-          currentUser = i;
-        }
-        else if((i)->role == "instructor"){
-          instructor currentUser;
-          currentUser = i;
-        }
-        loggedIn = 1;
-        break;
-      }
-    } cout << "Invalid email or password.";
+    cin >> userPW;
 
-    if(currentUser->role == "admin"){
+    while(loggedIn!=1){
+      for(list<student*>::iterator i = students.begin(); i != students.end(); i++){
+        if(userEmail == (*i)->email && userPW == (*i)->password)
+          currentUser_s = (*i);
+          loggedIn = 1;
+          break;
+      }
+      if(loggedIn == 1) break;
+      for (list<instructor*>::iterator i = instructors.begin(); i != instructors.end(); i++){
+        if(userEmail == (*i)->email && userPW == (*i)->password)
+          currentUser_i = (*i);
+          loggedIn = 1;
+          break;
+      }
+      if(loggedIn == 1) break;
+      for(list<admin*>::iterator i = admins.begin(); i != admins.end(); i++){
+        if(userEmail == (*i)->email && userPW == (*i)->password)
+          currentUser_a = (*i);
+          loggedIn = 1;
+          break;
+      }
+      if(loggedIn == 1) break;
+    cout << "Invalid email or password." << endl;    
+    }
+
+    if(currentUser_a->role == "Admin"){
       while(loggedIn == 1){  
         cout << endl << "---------------ADMIN MENU----------------" << endl;
         cout << endl << "Type 1 to check a roster, type 2 to edit a course, type 3 to edit a student, or type 9 to Logout." << endl;
         switch(choice){
           case 1:
-            currentUser.checkRoster();
+            currentUser_a->checkRoster();
             break;
           case 2:
-            currentUser.editCourse();
+            currentUser_a->editCourse();
             break;
           case 3:
-            currentUser.editStudent();
+            currentUser_a->editStudent(students, courses);
             break;
           case 9:
-            delete currentUser;
+            delete currentUser_a;
             loggedIn = 0;
             break;
           default:
@@ -67,19 +80,24 @@ int main(){
         }
       }
     }
-    else if(currentUser->role == "student"){
+    else if(currentUser_s->role == "Student"){
       while(loggedIn == 1){
         cout << endl << "---------------STUDENT MENU----------------" << endl;
-        cout << endl << "Type 1 to enter course registration, type 2 to check your schedule, or type 9 to Logout." << endl;
+        cout << endl << "Type 1 to enter course registration, tpye 2 to check all available courses, type 3 to check your schedule, or type 9 to Logout." << endl;
         switch(choice){
           case 1:
-            currentUser.courseRegister();
+            currentUser_s->courseRegister(courses);
             break;
           case 2:
-            currentUser.checkSchedule();
+            for(list<course*>::iterator i = courses.begin();i != courses.end(); i++){
+              cout << (*i)->title << " " << (*i)->CRN << " " << (*i)->time.tm_hour << " " << (*i)->day.tm_wday << endl;
+            }
+            break;
+          case 3:
+            currentUser_s->checkSchedule();
             break;
           case 9:
-            delete currentUser;
+            delete currentUser_s;
             loggedIn = 0;
             break;
           default:
@@ -88,19 +106,19 @@ int main(){
         }
       }
     }
-    else if(currentUser->role == "instructor"){
+    else if(currentUser_i->role == "Instructor"){
       while(loggedIn == 1){
           cout << endl << "---------------INSTRUCTOR MENU----------------" << endl;
         cout << endl << "Type 1 to check a roster, type 2 to check your courses, or type 9 to Logout." << endl;
         switch(choice){
           case 1:
-            currentUser.checkRoster();
+            currentUser_i->checkRoster();
             break;
           case 2:
-            currentUser.checkCourses();
+            currentUser_i->checkCourses();
             break;
           case 9:
-            delete currentUser;
+            delete currentUser_i;
             loggedIn = 0;
             break;
           default:
@@ -114,4 +132,5 @@ int main(){
       break;
     }
   } while (quitter == 0);
+  return 0;
 }

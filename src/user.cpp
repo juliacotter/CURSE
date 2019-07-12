@@ -1,89 +1,101 @@
-#include "user.h"
-#include <string>
 #include <iostream>
-
-using namespace std;
+#include <string>
+#include <list>
+#include "user.h"
 
 // class functions
 
 // Julia
-void student::checkSchedule(){
-  for(list<course>::iterator i = this->regCourses.begin(); i != this->regCourses.end(); i++){
-    cout << (i)->title << ": " << (i)->time << endl;
-  }
+ void student::checkSchedule(){
+  /* for(list<int*> i = this->regCourses.begin(); i != this->regCourses.end(); i++){
+    cout << (*i) << endl;
+  } */
 }
 
-//Julia - check available courses
-
 // Julia
-void student::courseRegister(){
-    int dropAdd = 0;
-    string crnInput;
+void student::courseRegister(list<course*> &courses){
+/*     int dropAdd, crnInput = 0;
     cout << "Type 1 to Add and 2 to Drop." << endl;
     cin >> dropAdd;
     if(dropAdd == 1){
-        if(this->regCourses.size() >= 5){
-            cout << "Sorry, you have registered for too many courses." << endl;
-            return;            
-        }
-        else{
-            cout << "Please enter the CRN you wish to add." << endl;
-            cin >> crnInput;
-            regCourse.pushback(crnInput);
+      if(this->regCourses.size() >= 5){
+          cout << "Sorry, you have registered for too many courses." << endl;
+          return;            
+      }
+      else{
+        cout << "Please enter the CRN you wish to add." << endl;
+        cin >> crnInput;
+        for(list<course*>::iterator i = courses.begin(); i != courses.end(); i++){
+          if((*i)->CRN == crnInput){
+            this->regCourses.push_back(*i);
+            (*i)->regStudents.push_back(this);
             cout << "You have been enrolled in the course." << endl;
+            return;
+          }
         }
+      }
     }
     else if(dropAdd == 2){
-      if(student->regCourses.size() == 0){
+      if(this->_regCourses.size() == 0){
         cout << "Sorry, you have not registered for any courses yet." << endl;
         return;
       }
       else{
         cout << "Please enter the CRN you wish to remove." << endl;
         cin >> crnInput;
-        for(int i = regCourses.begin(); i != regCourses.end(); i++){
-          if(i == crnInput){
-              regCourses.erase();
-              cout << "Course has been dropped." << endl;
-              return;
-          }   
+        for(list<course*> i = this->regCourses.begin(); i != this->regCourses.end(); i++){
+          for(list<course*> j = courses.begin(); i != courses.end(); j++){
+            if((*i)->CRN == crnInput && (*j)->_regStudents->wNumber == this->wNumber){
+                (*j)->regStudents.erase(*j);
+                this->regCourses.erase(*i);
+                cout << "Course has been dropped." << endl;
+                return;
+            }
+          }
         }
       }
     }
     else{
       cout << "Sorry, that was not one of the options." << endl;
-    }
+    } */
 }
 
 //Wilson
 void instructor::checkRoster(){
-  int crnInput;
+/*   int crnInput;
   cout << "Please enter the CRN for the course roster you wish to view." << endl;
   cin >> crnInput;
-  for(int i = instructor->regCourses.begin(); i != instructor->regCourses.end(); i++){
+  assigned = false;
+  for(list<course>::iterator i = this->regCourses.begin(); i != this->regCourses.end(); i++){
     if(i == crnInput){
-      cout << "The students in this course are :" << endl;
-      for(int j = 0; j < studentsinCRN.size(); j++){
+      assigned = true;
+      break;
+    }
+  }
+  if (assigned == true){
+    cout << "The students in this course are :" << endl;
+    for(int j = 0; j < studentsinCRN.size(); j++){
         cout << studentsinCRN[i] << endl;
       }
       cout << "~END OF COURSE LIST~" << endl;
       return;
-    }
   }
-  cout << "Sorry, you are not assigned to any courses with that CRN." << endl;
-  return;
+  else{
+    cout << "Sorry, you are not assigned to any courses with that CRN." << endl;
+    return;
+  } */
 }
 
 // Julia
 void instructor::checkCourses(){
-  for(list<course>::iterator i = this->offeredCourses.begin(); i != this->offeredCourses.end(); i++){
-    cout << (i)->title << ": " << (i)->time << endl;
-  }
+  /* for(list<course*>::iterator i = this->offeredCourses.begin(); i != this->offeredCourses.end(); i++){
+    cout << (*i)->title << ": " << (*i)->time.tm_hour << (*i)->time.tm_min << endl;
+  } */
 }
 
 //Wilson
 void admin::checkRoster(){
-  int crnInput;
+  /* int crnInput;
   cout << "Please enter the CRN for the course roster you wish to view." << endl;
   cin >> crnInput;
   for(int i = allCourses.begin(); i != allCourses.end(); i++){
@@ -96,12 +108,12 @@ void admin::checkRoster(){
       return;
     }
   }
-  cout << "Sorry, no course was found with that CRN." << endl;  
+  cout << "Sorry, no course was found with that CRN." << endl;   */
 }
 
 // Wilson
 void admin::editCourse(){
-  int adminChoice, crnInput;
+  /* int adminChoice, crnInput;
   string courseName, courseDays;
   cout << "Type 1 to add a new course, 2 to remove a course, and 3 to edit an existing course." << endl;
   cin >> adminChoice;
@@ -146,12 +158,12 @@ void admin::editCourse(){
     default:
       cout << "Sorry, that was not one of the options." << endl;
       break;
-  }
+  } */
 }
 
 // Julia
-void admin::editStudent(list<student> Students, list<course> Courses){
-  int wInput, choice = 0;
+void admin::editStudent(list<student*> &students, list<course*> &courses){
+  /* int wInput, choice, crnInput = 0;
   cout << "Enter W number for student: ";
   cin >> wInput;
   // veiw student profile and schedule
@@ -160,15 +172,14 @@ void admin::editStudent(list<student> Students, list<course> Courses){
 
   switch(choice){
     case 1:
-      int crnInput = 0;
       cout << "Enter the CRN you wish to add: " << endl;
       cin >> crnInput;
       // replace with SQL later
-      for(list<student>::iterator i = Students.begin(); i != Students.end(); i++){
-        for(list<course>::iterator j = Courses.begin(); j != Courses.end(); j++){
-          if((i)->wNumber == wInput && (j)->CRN == crnInput){
-            (i)->regCourses.push_back(j);
-            (j)->regStudents.push_back(i);
+      for(list<student*>::iterator i = students.begin(); i != students.end(); i++){
+        for(list<course*>::iterator j = courses.begin(); j != courses.end(); j++){
+          if((*i)->wNumber == wInput && (j)->CRN == crnInput){
+            (*i)->regCourses.push_back(*j);
+            (*j)->regStudents.push_back(*i);
             cout << "Course has been added." << endl;
             return;
           }
@@ -176,19 +187,18 @@ void admin::editStudent(list<student> Students, list<course> Courses){
       }
       break;
     case 2:
-      int crnInput = 0;
       cout << "Enter the CRN you wish to drop: " << endl;
       cin >> crnInput;
       // replace with SQL later
-      for(list<student>::iterator i = Students.begin(); i != Students.end(); i++){
-        if((i)->wNumber == wInput){
-          for(list<course>::iterator j = (i)->regCourses.begin(); j != (i)->regCourses.end(); j++){
-            if((j)->CRN == crnInput){  
-              (i)->regCourses.erase(j);
-              for (list<course>::iterator k = Courses.begin(); k != Courses.end(); k++){
-                if ((k)->CRN == crnInput){
-                  for(list<student>::iterator l = (k)->regStudents.begin(); l != (k)->regStudents.end(); l++){
-                    (k)->regStudents.erase(l);
+      for(list<student*>::iterator i = students.begin(); i != students.end(); i++){
+        if((*i)->wNumber == wInput){
+          for(list<course*>::iterator j = (*i)->regCourses.begin(); j != (*i)->regCourses.end(); j++){
+            if((*j)->CRN == crnInput){  
+              (*i)->regCourses.erase(*j);
+              for (list<course*>::iterator k = courses.begin(); k != courses.end(); k++){
+                if ((*k)->CRN == crnInput){
+                  for(list<student*>::iterator l = (*k)->regStudents.begin(); l != (*k)->regStudents.end(); l++){
+                    (*k)->regStudents.erase(*l);
                     cout << "Course has been dropped." << endl;
                     return;
                   }
@@ -199,5 +209,6 @@ void admin::editStudent(list<student> Students, list<course> Courses){
         }
       }
       break;
-  }
+  } */
+  
 }

@@ -3,43 +3,43 @@
 
 #include <string>
 #include <list>
-#include "course.h"
 
 using namespace std;
+
+class course;
 
 class user{
   public:
     int wNumber;
     string firstName, lastName, email, password, role;
 
-    user(string fn, string ln, string em):firstName(fn), lastName(ln), email(em){}
-
-    string login(list <student> Students, list <instructor> Instructors, list<admin> Admins);
-    void logout(string currentUser);
+    user(string fn, string ln, string em, string pw):firstName(fn), lastName(ln), email(em), password(pw){}
 };
 
 class student:public user{
   public:
     string major;
     int graduationYear;
-    list <course> regCourses;
+    list <int*> regCourses;
 
-    student(string fn, string ln, string em, string mj, int gy):user(fn, ln, em), major(mj), graduationYear(gy) {
+    student();
+    student(string fn, string ln, string em, string pw, string mj, int gy):user(fn, ln, em, pw), major(mj), graduationYear(gy) {
       role = "Student";
     }
 
   // log in, check schedule, register for classes, log out
     void checkSchedule();
-    void courseRegister();
+    void courseRegister(list<course*> &courses);
 };
 
 class instructor:public user{
   public:
     string title, officeLoaction;
-    list <course> offeredCourses;
-    list <student> roster;
+    list <int> offeredCourses;
+    list <string> roster;
 
-    instructor(string fn, string ln, string em, string t, string ol):user(fn, ln, em), title(t), officeLoaction(ol) {
+    instructor();
+    instructor(string fn, string ln, string em, string pw, string t, string ol):user(fn, ln, em, pw), title(t), officeLoaction(ol) {
       role = "Instructor";
     }
     // log in, check roster, see their available courses, log out
@@ -51,14 +51,15 @@ class admin:public user{
   public:
     string title, officeLoction;
 
-    admin(string fn, string ln, string em, string t, string ol):user(fn, ln, em), title(t), officeLocation(ol) {
+    admin();
+    admin(string fn, string ln, string em, string pw, string t, string ol):user(fn, ln, em, pw), title(t), officeLoction(ol) {
       role = "Admin";
     }
 
   // Log in, check rosters, add/remove/edit courses, force add/drop on student profiles, log out
     void checkRoster();
     void editCourse();
-    void editStudent(list<student> Students, list<course> Courses);
+    void editStudent(list<student*> &students, list<course*> &courses);
 };
 
-#endif
+#endif // USER_H

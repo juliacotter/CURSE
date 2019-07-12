@@ -9,13 +9,12 @@ using namespace std;
 
 class course{
   public:
-    string title, department, instructor, semester;
-    int CRN, credits;
-    struct tm time, day;
+    string title, department, instructor, semester, day;
+    int CRN, credits, time;
     list<string> regStudents;
 
     course();
-    course(string t, string d, string i, string s, int crn, int c, struct tm tm, struct tm dy):title(t), department(d), instructor(i), semester(s), CRN(crn), credits(c), time(tm), day(dy){};
+    course(string t, string d, string i, string s, int crn, int c, int tm, string dy):title(t), department(d), instructor(i), semester(s), CRN(crn), credits(c), time(tm), day(dy){};
 };
 
 #endif // COURSE_H

@@ -7,35 +7,47 @@
 
 // Julia
  void student::checkSchedule(){
-  /* for(list<int*> i = this->regCourses.begin(); i != this->regCourses.end(); i++){
-    cout << (*i) << endl;
-  } */
+  int zeroCounter = 0;
+  for(int i = 0; i < 5; i++){
+    if(this->regCourses[i] == 0){
+      zeroCounter++;
+      if(zeroCounter == 5){
+        cout << "You are not registered for any courses." << endl;
+        zeroCounter = 0;
+        return;
+      }
+      continue;
+    }
+    cout << "CRN: " << this->regCourses[i] << endl;
+    
+  }
 }
 
 // Julia
 void student::courseRegister(list<course*> &courses){
-/*     int dropAdd, crnInput = 0;
+    int dropAdd, crnInput = 0;
     cout << "Type 1 to Add and 2 to Drop." << endl;
     cin >> dropAdd;
     if(dropAdd == 1){
-      if(this->regCourses.size() >= 5){
-          cout << "Sorry, you have registered for too many courses." << endl;
-          return;            
-      }
-      else{
-        cout << "Please enter the CRN you wish to add." << endl;
-        cin >> crnInput;
-        for(list<course*>::iterator i = courses.begin(); i != courses.end(); i++){
-          if((*i)->CRN == crnInput){
-            this->regCourses.push_back(*i);
-            (*i)->regStudents.push_back(this);
-            cout << "You have been enrolled in the course." << endl;
-            return;
+      for(int i = 0; i < 5; i++){
+        if(this->regCourses[i] == 0){
+          cout << "Please enter the CRN for the course you wish to register." << endl;
+          cin >> crnInput;
+          this->regCourses[i] = crnInput;
+          for(list<course*>::iterator i = courses.begin(); i != courses.end(); i++){
+            if((*i)->CRN == crnInput){
+              (*i)->regStudents.push_back(this->email);
+              cout << "You have been enrolled in the course." << endl;
+              return;
+            }
           }
         }
       }
+      cout << "Sorry, you have registered for too many courses." << endl;
+      return;            
+      
     }
-    else if(dropAdd == 2){
+    /*else if(dropAdd == 2){
       if(this->_regCourses.size() == 0){
         cout << "Sorry, you have not registered for any courses yet." << endl;
         return;
@@ -54,10 +66,10 @@ void student::courseRegister(list<course*> &courses){
           }
         }
       }
-    }
+    }*/
     else{
       cout << "Sorry, that was not one of the options." << endl;
-    } */
+    }
 }
 
 //Wilson

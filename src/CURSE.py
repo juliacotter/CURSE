@@ -16,7 +16,7 @@ userPW = "NULL"
 string = "ROLE"
 quitter = 0
 loggedIn = 0
-
+currentUser = []
 #---------------example objects-----------------
 
 
@@ -31,6 +31,7 @@ while loggedIn != 1:
 		if (userEmail == s.email)&(userPW == s.password):
 			currentUser = s
 			loggedIn = 1
+			userType = 0
 			break
 			
 	if loggedIn == 1:
@@ -53,7 +54,7 @@ while loggedIn != 1:
 		break
 	print("Invalid email or password.")
 
-if(currentUser.role == "Admin"):
+if(userType == 2):
 	while(loggedIn == 1):
 		print( "---------------ADMIN MENU----------------")
 		choice = input("Type 1 to check a roster, type 2 to edit a course, type 3 to edit a student, or type 9 to Logout.")
@@ -74,7 +75,7 @@ if(currentUser.role == "Admin"):
 			print("Sorry, that was not one of the choices. Please try again.")
 			
 		
-elif(currentUser.role == "Student"):
+elif(userType == 0):
 	while(loggedIn == 1):
 		print("---------------STUDENT MENU----------------")
 		choice = input("Type 1 to enter course registration, tpye 2 to check all available courses, type 3 to check your schedule, or type 9 to Logout.")
@@ -96,7 +97,7 @@ elif(currentUser.role == "Student"):
 		else: 
 			print("Sorry, that was not one of the choices. Please try again.")
 
-elif(currentUser.role == "Instructor"):
+elif(userType == 1):
 	while(loggedIn == 1):
 		print("---------------INSTRUCTOR MENU----------------")
 		choice = input("Type 1 to check a roster, type 2 to check your courses, or type 9 to Logout.")
@@ -185,6 +186,7 @@ class student(user):
 				
 				for course in c:
 					if(course.CRN == crnInput):
+						user = "Select * FROM student WHERE ID = currentUser."
 						self.regCourses.append(course)
 						course.regStudents.append(self)
 						print("You have been enrolled in ", course.CRN, course.title)

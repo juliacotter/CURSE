@@ -7,6 +7,20 @@ crsr = connection.cursor()
 
 users = ["STUDENT", "INSTRUCTOR", "ADMIN"]
 
+create_table = """CREATE TABLE IF NOT EXISTS COURSE(
+  CRN INT PRIMARY KEY NOT NULL,
+  TITLE TEXT NOT NULL,
+  DEPT CHAR(4) NOT NULL,
+  INSTRUCTOR INT,
+  TIME INT NOT NULL,
+  DAY TEXT NOT NULL,
+  SEMESTER TEXT NOT NULL,
+  YEAR INT NOT NULL,
+  CREDITS INT NOT NULL,
+  FOREIGN KEY (INSTRUCTOR) REFERENCES INSTRUCTOR(ID)
+);"""
+crsr.execute(create_table)
+
 def addUser(userType, user):
   query = "INSERT INTO {} VALUES(?, ?, ?, ?, ?, ?);".format(users[userType])
   add = crsr.execute(query, (user["ID"], user["NAME"], user["SURNAME"], user["GRADYEAR"], user["MAJOR"], user["EMAIL"]))
@@ -23,20 +37,6 @@ def updateUser(userType, userID, field, userUpdate):
   connection.commit()
 
 def addCourse(course):
-  create_table = """CREATE TABLE IF NOT EXISTS COURSE(
-    CRN INT PRIMARY KEY NOT NULL,
-    TITLE TEXT NOT NULL,
-    DEPT CHAR(4) NOT NULL,
-    INSTRUCTOR INT NOT NULL,
-    TIME INT NOT NULL,
-    DAY TEXT NOT NULL,
-    SEMESTER TEXT NOT NULL,
-    YEAR INT NOT NULL,
-    CREDITS INT NOT NULL,
-    FOREIGN KEY (INSTRUCTOR) REFERENCES INSTRUCTOR(ID)
-  );"""
-  crsr.execute(create_table)
-  
   query = "INSERT INTO COURSE VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);"
   add = crsr.execute(query, (course["CRN"], course["TITLE"], course["DEPT"], course["INSTRUCTOR"], course["TIME"], course["DAY"], course["SEMESTER"], course["YEAR"], course["CREDITS"]))
   connection.commit()
@@ -104,6 +104,12 @@ while choice != 7:
     course["CRN"] = int(crn)
     course["TITLE"] = input("Enter title: ")
     course["DEPT"] = input("Enter department: ")
+    query = "SELECT * FROM INSTRUCTOR WHERE DEPT = ?"
+    crsr.execute(query, (course["DEPT"],))
+    results = crsr.fetchall()
+    print("Available intructors for this course: ")
+    for i in results:
+      print(i)
     instructor = input("Enter instructor ID: ")
     course["INSTRUCTOR"] = int(instructor)
     time = input("Enter time: ")

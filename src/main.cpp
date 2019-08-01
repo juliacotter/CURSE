@@ -41,9 +41,8 @@ int main(){
 
     while(loggedIn!=1){
       cout << "-------------LOGIN MENU--------------" << endl;
-      cout << "Enter email: ";
-      cin >> userEmail;
-      cout << endl << "Enter password: ";
+      in = input("Enter Email: ")
+      in2 = input("Enter password: ")
       cin >> userPW;
       for(list<student*>::iterator i = students.begin(); i != students.end(); i++){
         if(userEmail == (*i)->email && userPW == (*i)->password){

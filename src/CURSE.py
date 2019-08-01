@@ -2,23 +2,19 @@ from array import *
 import copy
 import random
 
-students = []
-instructors = []
-admins = []
-courses = []
-
 #--------------------COURSE CLASS---------------------------
 class course:
 	
-	def __init__(self, t, d, i, s, crn, c, tm, dy):
+	def __init__(self, crn, t, d, i, tm, dy, s, y, c):
+		self.CRN = crn
 		self.title = t
 		self.department = d
 		self.instructor = i
-		self.semester = s
-		self.CRN = crn
-		self.credits = c
 		self.time = tm
 		self.day = dy
+		self.semester = s
+		self.year = y
+		self.credits = c
 		self.regStudents = []
 		
 		
@@ -68,7 +64,6 @@ class student(user):
 				
 				for course in c:
 					if(course.CRN == crnInput):
-						user = "Select * FROM student WHERE ID = currentUser."
 						self.regCourses.append(course)
 						course.regStudents.append(self)
 						print("You have been enrolled in ", course.CRN, course.title)
@@ -93,10 +88,11 @@ class student(user):
 #--------------------INSTRUCTOR CLASS---------------------------	
 class instructor(user):
 	
-	def __init__(self, wn ,fn, ln, em, pw, t, ol):
+	def __init__(self, wn ,fn, ln, em, pw, t, hy, d):
 		user.__init__(self, wn, fn, ln, em, pw)
 		self.title = t
-		self.officeLocation = ol
+		self.hireYear = hy
+		self.dept = d
 		self.offeredCourses = []
 		self.role = "Instructor"
 	def checkRoster(self):
@@ -173,10 +169,10 @@ class admin(user):
 					for c in courses:
 						if(c in s.regCourses):
 							c.regStudents = [elem for elem in c.regStudents if elem != s]
-					s.regCourses = []
+					students = [elem for elem in students if elem != s]
 		
 		elif choice == 3:
-			editChoice = int(input("Type 1 to add student to course, 2 to drop student from course, or 3 to edit student information: "))
+			editChoice = int(input("Type 1 to add student to course, 2 to drop student from course, or 3 to update student information: "))
 			STUDENT = int(input("Enter student's W Number: "))
 			if editChoice == 1:
 				CRN = int(input("Enter the CRN you wish to add: "))
@@ -184,22 +180,67 @@ class admin(user):
 					if s.wNumber == STUDENT:
 						for c in courses:
 							if(c.CRN == CRN):
-								print('A')
 								s.regCourses.append(c)
 								c.regStudents.append(s)
+								print("Student added to course!")
 			elif editChoice == 2:
 				CRN = int(input("Enter the CRN you wish to drop: "))
-				pass
-			
+				for s in students:
+					if s.wNumber == STUDENT:
+						for c in s.regCourses:
+							if c.CRN == CRN:
+								s.regCourses = [elem for elem in s.regCourses if elem != c]
+				for c in courses:
+					if c.CRN == CRN:
+						for s in c.regStudents:
+							if s.wNumber == STUDENT:
+								c.regStudents = [elem for elem in c.regStudents if elem != s]
+								print("Student dropped from course!")
 			elif editChoice == 3:
-				pass
-
+				field = input("Enter what field you would like to update: ")
+				update = input("Enter update: ")
+				for s in students:
+					if s.wNumber == STUDENT:
+						setattr(s, field, update)
+						print("Updated!")
 			else:
 				print("Invalid input")
-				pass
 		else:
 			print("Invalid input")
 
+students = [
+	student(10001, 'Isaac', 'Newton', 'newtoni@wit.edu', "asdfghjkl", 'BSAS', 1668),
+	student(10002, 'Marie', 'Curie', 'curiem@wit.edu', "asdfghjkl,", "BSAS", 1903),
+	student(10003, 'Nikola', 'Tesla', 'telsan@wit.edu', "asdfghjkl", "BSEE", 1878),
+	student(10004, 'Thomas', 'Edison', 'notcool@wit.edu', "asdfghjkl", 'BSEE', 1879),
+	student(10005, 'John', 'von Neumann', 'vonneumannj', 'asdfghjkl', 'BSCO', 1923),
+	student(10006, 'Grace', 'Hopper', 'hopperg@wit.edu', 'asdfghjkl', 'BCOS', 1928),
+	student(10007, 'Mae', 'Jemison', 'jemisonm@wit.edu', 'asdfghjkl', 'BSCH', 1981),
+	student(10008, 'Mark', 'Dean', 'deanm@wit.edu', 'asdfghjkl', 'BSCO', 1979),
+	student(10009, 'Michael', 'Faraday', 'faradaym@wit.edu', 'asdfghjkl', 'BSAS', 1812),
+	student(10010, 'Ada', 'Lovelace', 'lovelacea@wit.edu', 'asdfghjkl', 'BCOS', 1832),
+	student(10011, 'Julia', 'Cotter', 'cotterj@wit.edu', 'asdfghjkl', 'BSCO',2020),
+	student(10012, 'Wilson', 'Ochoa', 'ochoaw@wit.edu', 'asdfghjkl', 'BSCO', 2020)
+]
+instructors = [
+	instructor(20001, 'Joseph', 'Fourier', 'fourierj@wit.edu', 'asdfghjkl', 'Full Prof.', 1820, 'BSEE'),
+	instructor(20002, 'Nelson', 'Mandela', 'mandelan@wit.edu', 'asdfghjkl', 'Full Prof.', 1994, 'HUSS'),
+	instructor(20003, 'Galileo', 'Galilei', 'galileig@wit.edu', 'asdfghjkl', 'Full Prof.', 1600, 'BSAS'),
+	instructor(20004, 'Alan', 'Turing', 'turinga@wit.edu', 'asdfghjkl', 'Associate Prof.', 1940, 'BSCO'),
+	instructor(20005, 'Katie', 'Bouman', 'boumank@wit.edu', 'asdfghjkl', 'Assistant Prof.', 2019, 'BCOS'),
+	instructor(20006, 'Daniel', 'Bernoulli', 'bernoullid@wit.edu', 'asdfghjkl', 'Associate Prof.', 1760, 'BSME')
+]
+admins = [
+	admin(30001, 'Barack', 'Obama', 'obamab@wit.edu', 'asdfghjkl', 'Past President', 'Dobbs 1600'),
+	admin(30002, 'Malala', 'Yousafzai', 'yousafzaim@wit.edu', 'asdfghjkl', 'Registrar', 'Wentworth 101')
+]
+courses = [
+	course(40001, 'Computer Architecture', 'BSEE', 20001, 800, 'TR', 'Summer', 2019, 3),
+	course(40002, 'Ethics', 'HUSS', 20002, 1300, 'TR', 'Summer', 2019, 4),
+	course(40003, 'Data Structures', 'BCOS', 20005, 1230, 'WF', 'Summer', 2019, 4),
+	course(40004, 'Thermodynamics I', 'BSME', 20006, 1000, 'TR', 'Summer', 2019, 4),
+	course(40005, 'Computer Networks', 'BSCO', 20004, 800, 'WF', 'Summer', 2019, 4)
+]
 
 choice = 0
 userEmail = "NULL"
@@ -207,20 +248,6 @@ userPW = "NULL"
 string = "ROLE"
 quitter = 0
 loggedIn = 0
-
-#---------------example objects-----------------
-
-newStudent = student(10001, "Wilson","Ochoa","ochoaw@wit.edu","abc123","CE","2020")
-students.append(newStudent)
-
-newAdmin = admin(20001, "SpongeBob", "SquarePants", "ss@wit.edu", "pa", "Administrator", "WENTW101")
-admins.append(newAdmin)
-
-newInstructor = instructor(30001, "Joe", "Biden", "bjoe@wit.edu", "abc123", "AP", "Dobbs")
-instructors.append(newInstructor)
-
-newCourse = course("APC", "BSCO", "CARP", "Summer", 123456, 4, 1300, "TR")
-courses.append(newCourse)
 
 while(1):
 	while loggedIn != 1:
@@ -286,7 +313,7 @@ while(1):
 			
 			elif(choice == 2):
 				for c in courses:
-					print(c.title, c.CRN, c.time, c.day)
+					print(c.CRN, c.title, c.time, c.day)
 				
 			elif(choice == 3):
 				currentUser.checkSchedule()

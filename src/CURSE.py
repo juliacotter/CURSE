@@ -63,7 +63,10 @@ class student(user):
 
             else:
                 crnInput = int(input("Please enter the CRN for the course you wish to register."))
-
+                for rc in self.regCourses:
+                    if(rc.CRN == crnInput):
+                        print("You have already registered for this course.")
+                        return
                 for course in c:
                     if (course.CRN == crnInput and course.semester == semester and course.year == year):
                         self.regCourses.append(course)
@@ -80,9 +83,9 @@ class student(user):
             else:
                 crnInput = int(input("Please enter the CRN you wish to remove."))
 
-                for course in self.regCourses:
-                    if (course.CRN == crnInput and course.semester == semester and course.year == year):
-                        course.regStudents = [elem for elem in course.regStudents if elem != self]
+                for course in range(len(c)):
+                    if (c[course].CRN == crnInput and course.semester == semester and course.year == year):
+                        c[course].regStudents.remove(self)
                         self.regCourses = [elem for elem in self.regCourses if elem != course]
                         return
 
@@ -100,16 +103,36 @@ class instructor(user):
         self.offeredCourses = [c for c in courses if self.wNumber == c.instructor]
         self.role = "Instructor"
 
-    def checkRoster(self):
+    def checkRoster(self, courses):
+        if (len(self.offeredCourses) == 0):
+            print("You aren't teaching any courses!")
+            return
+        COURSE = int(input("Please enter a courses CRN to view it's roster. "))
         for c in self.offeredCourses:
-            print(c.title, c.CRN)
-            for s in c.regStudents:
-                print(s.wNumber, s.firstName, s.lastName)
-            print()
+            if (c.CRN == COURSE):
+                print(c.title, c.CRN)
+                for course in courses:
+                    if (course.CRN == c.CRN):
+                        for s in course.regStudents:
+                            print(s.wNumber, s.firstName, s.lastName)
+                        return
+        print("Sorry, you do not teach any courses with that CRN.")
         return
 
     def checkCourses(self):
-        return
+        if (len(self.offeredCourses) == 0):
+            print("You aren't teaching any courses!")
+            return
+        for c in self.offeredCourses:
+            print(c.title, c.CRN, ":")
+            for course in courses:
+                if(course.CRN == c.CRN):
+                    if(len(course.regStudents) == 0):
+                        print("No students in this course.")
+                        continue
+                    for s in course.regStudents:
+                        print(s.wNumber, s.firstName, s.lastName)
+                    print("--------------------")
 
 
 # --------------------ADMIN CLASS---------------------------
@@ -151,7 +174,7 @@ class admin(user):
             DEPARTMENT = input("Enter the course department. ")
             print("-----INSTRUCTOR LIST-----")
             for i in instructors:
-                if(i.dept == DEPARTMENT):
+				if(i.dept == DEPARTMENT):
                     print(i.wNumber, i.firstName, i.lastName)
             INSTRUCTOR = int(input("Enter the instructors W Number for this class."))
             for i in instructors:
@@ -168,7 +191,7 @@ class admin(user):
                     return
             print("Sorry, there was no instructor with that W Number.")
             return
-        
+
         elif choice == 2:
             COURSE = int(input("Please enter the CRN for the course you would like to delete. "))
             for c in range(len(courses)):
@@ -209,7 +232,7 @@ class admin(user):
             FIRSTNAME = input("Enter first name: ")
             LASTNAME = input("Enter last name: ")
             for s in students:
-                if s.firstName == FIRSTNAME & s.lastName == LASTNAME:
+                if (s.firstName == FIRSTNAME) & (s.lastName == LASTNAME):
                     print("The student that you entered matches an existing student.")
                     print(s.wNumber, s.firstName, s.lastName, s.email, s.major, s.graduationYear)
                     yn = input("Does this match the student you wish to add? (y/n)")
@@ -323,6 +346,7 @@ admins = [
     admin(30002, 'Malala', 'Yousafzai', 'yousafzaim@wit.edu', 'asdfghjkl', 'Registrar', 'Wentworth 101')
 ]
 
+
 choice = 0
 userEmail = "NULL"
 userPW = "NULL"
@@ -429,7 +453,7 @@ while (1):
             choice = int(input("Type 1 to check a roster, type 2 to check your courses, or type 9 to Logout."))
 
             if (choice == 1):
-                currentUser.checkRoster()
+                currentUser.checkRoster(courses)
 
             elif (choice == 2):
                 currentUser.checkCourses()

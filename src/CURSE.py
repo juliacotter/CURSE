@@ -92,12 +92,12 @@ class instructor(user):
         self.title = t
         self.hireYear = hy
         self.dept = d
-        self.offeredCourses = []
+        self.offeredCourses = [c for c in courses if self.wNumber == c.instructor]
         self.role = "Instructor"
 
     def checkRoster(self):
         for c in self.offeredCourses:
-            print(c.title, c.crn)
+            print(c.title, c.CRN)
             for s in c.regStudents:
                 print(s.wNumber, s.firstName, s.lastName)
             print()
@@ -146,7 +146,8 @@ class admin(user):
             DEPARTMENT = input("Enter the course department. ")
             print("-----INSTRUCTOR LIST-----")
             for i in instructors:
-                print(i.wNumber, i.firstName, i.lastName)
+                if(i.dept == DEPARTMENT):
+                    print(i.wNumber, i.firstName, i.lastName)
             INSTRUCTOR = int(input("Enter the instructors W Number for this class."))
             for i in instructors:
                 if(i.wNumber == INSTRUCTOR):
@@ -157,6 +158,7 @@ class admin(user):
                     CREDITS = input("Enter the course credits. ")
                     newCourse = course(COURSE, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DAY, SEMESTER, YEAR, CREDITS)
                     courses.append(newCourse)
+                    i.offeredCourses.append(newCourse)
                     print(newCourse.CRN, newCourse.title, "has been created.")
                     return
             print("Sorry, there was no instructor with that W Number.")
@@ -281,7 +283,13 @@ class admin(user):
         else:
             print("Invalid input")
 
-
+courses = [
+    course(40001, 'Computer Architecture', 'BSEE', 20001, 800, 'TR', 'Summer', 2019, 3),
+    course(40002, 'Ethics', 'HUSS', 20002, 1300, 'TR', 'Summer', 2019, 4),
+    course(40003, 'Data Structures', 'BCOS', 20005, 1230, 'WF', 'Summer', 2019, 4),
+    course(40004, 'Thermodynamics I', 'BSME', 20006, 1000, 'TR', 'Summer', 2019, 4),
+    course(40005, 'Computer Networks', 'BSCO', 20004, 800, 'WF', 'Summer', 2019, 4)
+]
 students = [
     student(10001, 'Isaac', 'Newton', 'newtoni@wit.edu', "asdfghjkl", 'BSAS', 1668),
     student(10002, 'Marie', 'Curie', 'curiem@wit.edu', "asdfghjkl,", "BSAS", 1903),
@@ -308,13 +316,6 @@ instructors = [
 admins = [
     admin(30001, 'Barack', 'Obama', 'obamab@wit.edu', 'asdfghjkl', 'Past President', 'Dobbs 1600'),
     admin(30002, 'Malala', 'Yousafzai', 'yousafzaim@wit.edu', 'asdfghjkl', 'Registrar', 'Wentworth 101')
-]
-courses = [
-    course(40001, 'Computer Architecture', 'BSEE', 20001, 800, 'TR', 'Summer', 2019, 3),
-    course(40002, 'Ethics', 'HUSS', 20002, 1300, 'TR', 'Summer', 2019, 4),
-    course(40003, 'Data Structures', 'BCOS', 20005, 1230, 'WF', 'Summer', 2019, 4),
-    course(40004, 'Thermodynamics I', 'BSME', 20006, 1000, 'TR', 'Summer', 2019, 4),
-    course(40005, 'Computer Networks', 'BSCO', 20004, 800, 'WF', 'Summer', 2019, 4)
 ]
 
 choice = 0

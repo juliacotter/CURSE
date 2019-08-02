@@ -40,20 +40,24 @@ class student(user):
         self.regCourses = []
         self.role = "Student"
 
-    def checkSchedule(self):
+    def checkSchedule(self, semester, year):
         if (len(self.regCourses) != 0):
             for c in self.regCourses:
-                print(c.CRN, c.title, c.time, c.day)
+                if(c.semester == semester and c.year == year):
+                    print(c.CRN, c.title, c.time, c.day)
+                else:
+                    print("You are not registered for any courses this semester.")
 
         else:
             print("You are not registered for any courses.")
             return
 
-    def courseRegister(self, c):
+    def courseRegister(self, c, semester, year):
         dropAdd = int(input("Type 1 to Add and 2 to Drop."))
 
         if (dropAdd == 1):
-            if (len(self.regCourses) == 5):
+            semesterCourses = [course for course in c if course.semester == semester and course.year == year]
+            if (len(semesterCourses) == 5):
                 print("Sorry, you have registered for too many courses.")
                 return
 
@@ -61,12 +65,12 @@ class student(user):
                 crnInput = int(input("Please enter the CRN for the course you wish to register."))
 
                 for course in c:
-                    if (course.CRN == crnInput):
+                    if (course.CRN == crnInput and course.semester == semester and course.year == year):
                         self.regCourses.append(course)
                         course.regStudents.append(self)
                         print("You have been enrolled in ", course.CRN, course.title)
                         return
-                print("Sorry, there was no course found with that CRN.")
+                print("Sorry, there was no course found with that CRN during that semester.")
 
         elif (dropAdd == 2):
             if (len(self.regCourses) == 0):
@@ -77,11 +81,12 @@ class student(user):
                 crnInput = int(input("Please enter the CRN you wish to remove."))
 
                 for course in self.regCourses:
-                    if (course.CRN == crnInput):
+                    if (course.CRN == crnInput and course.semester == semester and course.year == year):
                         course.regStudents = [elem for elem in course.regStudents if elem != self]
                         self.regCourses = [elem for elem in self.regCourses if elem != course]
-
                         return
+
+                    print("Sorry, there was no course found with that CRN during that semester.")
 
 
 # --------------------INSTRUCTOR CLASS---------------------------
@@ -154,7 +159,7 @@ class admin(user):
                     TIME = input("Enter the course time. (ex. 8:00 = 0800) ")
                     DAY = input("Enter the course day(s). ")
                     SEMESTER = input("Enter the course semester. ")
-                    YEAR = input("Enter the course year. ")
+                    YEAR = int(input("Enter the course year. "))
                     CREDITS = input("Enter the course credits. ")
                     newCourse = course(COURSE, TITLE, DEPARTMENT, INSTRUCTOR, TIME, DAY, SEMESTER, YEAR, CREDITS)
                     courses.append(newCourse)
@@ -379,21 +384,37 @@ while (1):
 
 
     elif (currentUser.role == "Student"):
+        semester = None
+        year = None
         while (loggedIn == 1):
             print("---------------STUDENT MENU----------------")
             choice = int(input(
-                "Type 1 to enter course registration, type 2 to check all available courses, type 3 to check your schedule, or type 9 to Logout."))
+                "Type 1 to set semester, type 2 to enter course registration, type 3 to check all available courses, type 4 to check your schedule, or type 9 to Logout."))
             choice = int(choice)
 
             if (choice == 1):
-                currentUser.courseRegister(courses)
+                semester = input("Enter the semester: ")
+                year = int(input("Enter year: "))
 
-            elif (choice == 2):
-                for c in courses:
-                    print(c.CRN, c.title, c.time, c.day)
+            if (choice == 2):
+                if (semester is not None and year is not None):
+                    currentUser.courseRegister(courses, semester, year)
+                else:
+                    print("Must set semester")
 
             elif (choice == 3):
-                currentUser.checkSchedule()
+                if (semester is not None and year is not None):
+                    for c in courses:
+                        if c.semester == semester and c.year == year:
+                            print(c.CRN, c.title, c.time, c.day)
+                else:
+                    print("Must set semester")
+
+            elif (choice == 4):
+                if (semester is not None and year is not None):
+                    currentUser.checkSchedule(semester, year)
+                else:
+                    print("Must set semester")
 
             elif (choice == 9):
                 currentUser = 0

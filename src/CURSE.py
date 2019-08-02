@@ -174,7 +174,7 @@ class admin(user):
             DEPARTMENT = input("Enter the course department. ")
             print("-----INSTRUCTOR LIST-----")
             for i in instructors:
-				if(i.dept == DEPARTMENT):
+                if(i.dept == DEPARTMENT):
                     print(i.wNumber, i.firstName, i.lastName)
             INSTRUCTOR = int(input("Enter the instructors W Number for this class."))
             for i in instructors:
